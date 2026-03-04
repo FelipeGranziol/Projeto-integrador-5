@@ -1,15 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import jsonData from "./cities.json";
+import Infos from "./infos";
 function App() {
+  // Data
   const cities = jsonData;
+  const citiesNames = cities.features.map((c) => c.properties.name);
+
+  //States
+  const [centers, setCenters] = useState([]);
+  const [actual, setActual] = useState(null);
+
+  //Refs
+  const mapRef = useRef(null);
+  const layersRef = useRef({});
 
   useEffect(() => {
+    if (mapRef.current) return;
+    const c = [];
     const container = L.DomUtil.get("map");
     if (container._leaflet_id) return;
-    const map = L.map("map", {
+    mapRef.current = L.map("map", {
       center: [-22, -48],
       zoom: 7,
     });
@@ -19,25 +32,75 @@ function App() {
         attribution: '© <a href="https://carto.com/">CARTO</a>',
         maxZoom: 19,
       },
-    ).addTo(map);
-    var myLayer = L.geoJSON(cities, {
+    ).addTo(mapRef.current);
+    L.geoJSON(cities, {
+      style: {
+        weight: 0.5,
+        color: "#61fff2",
+        opacity: 0.5,
+        fillOpacity: 0.1,
+      },
       onEachFeature: (feature, layer) => {
+        layersRef.current[feature.properties.name] = layer;
         if (feature.properties?.name) {
           layer.bindTooltip(feature.properties.name, {
-            permanent: true, // sempre visível
+            permanent: false, // sempre visível
             direction: "center", // centralizado no polígono
             className: "city-label", // classe CSS customizável
           });
         }
+        const { lat, lng } = layer.getBounds().getCenter();
+        c.push({
+          name: feature.properties.name,
+          center: [lat, lng],
+        });
       },
-    }).addTo(map);
+    }).addTo(mapRef.current);
+    setCenters(c);
 
-    return () => map.remove();
+    return () => {
+      (mapRef.current.remove(), (mapRef.current = null));
+    };
   }, []);
 
+  const showCity = (cityName) => {
+    const city = centers.find((c) => c.name === cityName);
+    if (actual && layersRef.current[actual]) {
+      layersRef.current[actual].setStyle({
+        weight: 0.5,
+        color: "#61fff2",
+      });
+    }
+
+    if (layersRef.current[cityName]) {
+      layersRef.current[cityName].setStyle({
+        weight: 2,
+        color: "#ff0000",
+      });
+    }
+    setActual(cityName);
+    mapRef.current?.flyTo(city.center, 11);
+  };
   return (
     <>
-      <div id="map" style={{ height: "100vh", width: "100%" }}></div>
+      <div
+        style={{
+          position: "relative",
+        }}
+      >
+        {actual && <Infos city={actual} />}
+        <div className="select-container">
+          <select
+            onChange={(e) => showCity(e.target.value)}
+            defaultValue={null}
+          >
+            {citiesNames.map((c) => (
+              <option>{c}</option>
+            ))}
+          </select>
+        </div>
+        <div id="map" style={{ height: "100vh", width: "100%" }} />
+      </div>
     </>
   );
 }
