@@ -8,7 +8,6 @@ function Map() {
   // Data
   const cities = jsonData;
   const citiesNames = cities.features.map((c) => c.properties.name);
-  console.log(citiesNames);
   //States
   const [centers, setCenters] = useState([]);
   const [actual, setActual] = useState(null);

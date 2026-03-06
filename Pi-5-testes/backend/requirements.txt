@@ -1,0 +1,6 @@
+# Carregar dados
+- hugginface_hub
+- pathlib
+- pandas
+- datasets
+- fastapi[standard]
