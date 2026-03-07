@@ -3,12 +3,12 @@ import os
 import csv
 import pandas as pd
 import re
-
+from pathlib import Path
 # Enviar dados para o repositorio do hugging face
 # Ainda está bem desorganizado, precisamos pensar em um padrão de armazenamento (O que? Em que lugar? Etc...)]
 # Enviaremos os dados como csv, são mais leves, a IA lê do mesmo jeito, alem de ser facil de manipular com a biblioteca pandas
 
-path = "./base_de_dados/"
+path = Path("./backend/base_de_dados").resolve()
 dir_list = os.listdir(path)
 api = HfApi()
 
@@ -27,7 +27,7 @@ def find_last_row(file_path):
     return None
 
 for file in dir_list:
-    file_path = f"./base_de_dados/{file}"
+    file_path = f"{path}/{file}"
     last_row = find_last_row(file_path)
 
     if last_row is None:

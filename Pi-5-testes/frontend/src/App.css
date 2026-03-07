@@ -1,0 +1,97 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.city-label {
+  background-color: none;
+  color: rgb(0, 0, 0);
+  font-size: 8px;
+}
+
+.select-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background-color: #ffffffe8;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  select {
+    background-color: transparent;
+    border: none;
+    padding: 15px;
+  }
+}
+
+.status-container {
+  position: absolute;
+  width: 40%;
+  height: 80vh;
+  top: 10%;
+  left: 2%;
+  z-index: 1000;
+  background-color: #e5ebff;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: start;
+  h2 {
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  p {
+    color: #5a6d8f;
+    margin: 0;
+  }
+  .infos-tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    color: #1a1a1a;
+    width: 100%;
+  }
+}
+.tabs-content {
+  height: 100%;
+  width: 100%;
+}
+
+/* VITAL RATES */
+.vital-rates-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vital-rates-chart {
+  padding: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+}
+
+.vital-rates-card {
+  width: 35%;
+  height: 7rem;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+  padding-inline: 10px;
+}
+.vital-rates-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  width: 100%;
+  gap: 1rem;
+}
