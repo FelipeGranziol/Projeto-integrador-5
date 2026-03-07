@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import VitalRates from "./VitalRates";
 
 const Infos = ({ city }) => {
   const [cityData, setCityData] = useState(null);
@@ -23,13 +24,20 @@ const Infos = ({ city }) => {
 
   return (
     <div className="status-container">
-      {cityData && (
-        <>
-          <h3>Dados de 2014 - 2024</h3>
+      <h2>{city}</h2>
+      <div className="vital-rates-container">
+        {cityData && (
+          <>
+            <VitalRates
+              data={cityData?.vital_rates}
+              totalData={cityData?.vital_rates_total}
+            />
+            {/* <h3>Dados de 2014 - 2024</h3>
           <span>Natalidade: {cityData["Nascim_p/resid.mãe"]}</span>
-          <span>Mortalidade: {cityData["Óbitos_p/Residênc"]}</span>
-        </>
-      )}
+          <span>Mortalidade: {cityData["Óbitos_p/Residênc"]}</span> */}
+          </>
+        )}
+      </div>
     </div>
   );
 };
