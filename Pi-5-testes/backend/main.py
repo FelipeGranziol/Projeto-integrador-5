@@ -1,9 +1,17 @@
 from fastapi import FastAPI
 from scripts.show_data import OrganizeData
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 
-app = FastAPI()
 data = OrganizeData()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    data.organize()  # Roda UMA vez ao iniciar o servidor
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -11,6 +19,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 @app.get("/api/city-data/{city}")
 def get_city(city: str):
     city_obj = data.find(city)

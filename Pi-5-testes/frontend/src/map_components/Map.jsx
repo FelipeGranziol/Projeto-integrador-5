@@ -51,7 +51,7 @@ function Map() {
         const { lat, lng } = layer.getBounds().getCenter();
         c.push({
           name: feature.properties.name,
-          center: [lat, lng],
+          center: [lat, lng - 0.2],
         });
       },
     }).addTo(mapRef.current);
